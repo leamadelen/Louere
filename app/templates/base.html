@@ -1,0 +1,135 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - louere.no</title>
+        {% else %}
+        <title>louere.no</title>
+        {% endif %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200&display=swap" rel="stylesheet">
+        <style>
+            nav{
+                height: 80px;
+                line-height: 80px;
+            }
+            .newfont{
+                font-family: 'Nunito', sans-serif;
+            }
+            .Nunito{
+                font-family: 'Nunito', sans-serif;
+                font-size: 18px;
+            }
+            .logo{
+                font-family: 'Nunito', sans-serif;
+                color: black;
+                font-size: 50px;
+                line-height: 80px;
+                margin-top: 0;
+                padding-top: 0;
+            }
+            .headeroptions{
+                color: black;
+            }
+            input:focus{
+                outline: none;
+            }
+            .footertitle{
+                color: black;
+                text-transform: uppercase;
+                font-size: 18px;
+            }
+            .btn{
+                background-color: pink;
+                color: black;
+            }
+            .btn:hover{
+                background-color: lightpink;
+            }
+        </style>
+        <script>
+
+        </script>
+    </head>
+
+    <header>
+        <nav class="nav-wraper" style="background-color: pink;">
+            <div class="row">
+                <div class="col l2 offset-l1">
+                    <a href="{{ url_for('index') }}"><h1 class="logo">louere.no</h1></a>
+                </div>
+                <div class="col l5 offset-l3">
+                    <ul style="display: flex; justify-content: center; width: max-content;">
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('index') }}" class="Nunito headeroptions">Hjem</a></li>
+                            <li><a href="{{ url_for('user', username=current_user.username) }}" class="Nunito headeroptions">Profil</a></li>
+                            <li><a href="{{ url_for('chatperson') }}"  class="Nunito headeroptions">Meldinger</a></li>
+                            <li><a href="{{ url_for('explore') }}" class="Nunito headeroptions">Leie</a></li>
+                            <li><a href="{{ url_for('leie') }}" class="Nunito headeroptions">Leie ut</a></li>
+                            <li><a href="{{ url_for('kontakt') }}" class="Nunito headeroptions">Kontakt oss</a></li>
+                            <li><a href="{{ url_for('logout') }}"class="Nunito headeroptions">Logg ut</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('index') }}" class="Nunito headeroptions">Hjem</a></li>
+                            <li><a href="{{ url_for('login') }}" class="Nunito headeroptions">Leie</a></li>
+                            <li><a href="{{ url_for('login') }}" class="Nunito headeroptions">Leie ut</a></li>
+                            <li><a href="{{ url_for('kontakt') }}" class="Nunito headeroptions">Kontakt oss</a></li>
+                            <li><a href="{{ url_for('login') }}" class="Nunito headeroptions">Logg inn</a></li>
+                            <li><a href="{{ url_for('register') }}" class="Nunito headeroptions">Registrer deg</a></li>
+
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <body style="background-color: lightyellow;">
+        <div class="container" style="min-height: 50vh;">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            {% block content %}
+                {% block scripts %}
+                    {{ super() }}
+                    {{ moment.include_moment() }}
+                    {{ moment.locale('en-gb') }}
+                {% endblock %}
+            {% endblock %}
+        </div>
+    </body>
+    <footer class="page-footer" style="background-color: pink; border-top: 1px solid white; margin-top: 100px;">
+        <div class="container" style="margin-bottom: 20px;">
+            <div class="row" style="margin: 0;">
+                <div class="col s12 m6 l4">
+                    <ul style="margin-bottom: 0;">
+                        <li class="footertitle Nunito" style="">Louer</li>
+                        <hr style="width: 20px; background-color: black; border: 1px solid black;" class="left">
+                        <br>
+                        <li class="footertext black-text Nunito">Gaten 12</li>
+                        <li class="footertext black-text Nunito" style="line-height: 30px">4004 Stavanger</li>
+                        <a><li class="footertext black-text Nunito">Mail: <span style="text-decoration: underline;">post@louer.no</span></li></a>
+                        <li class="footertext black-text Nunito">Telefon: 47 47 47 47</li>
+                    </ul>
+                </div>
+                <div class="col s12 m6 l4">
+                    <ul stlye="margin-top: 0;">
+                        <li class="footertitle Nunito" style="">NAVIGASJON</li>
+                        <hr style="width: 20px; background-color: black; border: 1px solid black;" class="left">
+                        <br>
+                        <a href="{{ url_for('index') }}"><li class="footertext black-text Nunito"><b>Hjem</b></li></a>
+                        <a href="{{ url_for('explore') }}"><li class="footertext black-text Nunito"><b>Leie</b></li></a>
+                        <a href="{{ url_for('leie') }}"><li class="footertext black-text Nunito"><b>Leie ut</b></li></a>
+                        <a href="{{ url_for('kontakt') }}"><li class="footertext black-text Nunito"><b>Kontakt oss</b></li></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div style="border-top: 1px solid white; background-color: pink;" class="footer-copyright">
+            <div class="container center-align black-text">&copy; 2021 Dat250</div>
+        </div>
+    </footer>
+</html>

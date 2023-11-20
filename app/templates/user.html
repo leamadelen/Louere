@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table>
+        <tr valign="top">
+            <td><img src="{{ user.avatar(128) }}"></td>
+            <td>
+                <h1>{{ user.username }}</h1>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}
+                <!--<p>Last seen on: {{ moment(user.last_seen).format('LLL') }}</p>-->
+                {% endif %}
+                <p>{{ user.followers.count() }} følgere, {{ user.followed.count() }} følger.</p>
+                {% if user == current_user %}
+                <p style="text-decoration: underline;"><a href="{{ url_for('edit_profile') }}">Endre profil</a></p>
+                {% else %}
+                    {% if not current_user.is_following(user) %}
+                    <p>
+                        <form action="{{ url_for('follow', username=user.username) }}" method="post">
+                            {{ form.hidden_tag() }}
+                            {{ form.submit(value='Følg') }}
+                        </form>
+                    </p>
+                    {% else %}
+                    <p>
+                        <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
+                            {{ form.hidden_tag() }}
+                            {{ form.submit(value='Stop å følge') }}
+                        </form>
+                    </p>
+                    {% endif %}
+                    <p>
+                        <a href="{{ url_for('newchat', username=user.username) }}"><button class="btn">Chat</button></a>
+                    </p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    <br>
+    {% if prev_url %}
+    <a href="{{ prev_url }}">Newer posts</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Older posts</a>
+    {% endif %}
+{% endblock %}

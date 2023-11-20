@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+
+</div>
+  <div class="row" style="margin: 0; padding: 0;">
+    <div class="col l4">
+      <h2 style="margin: 0; font-size: 22px; color: grey;">Meldinger</h2>
+      <div class="chatroom_holder"></div>
+    </div>
+    <div class="col l8" style="border-left: 1px solid black; min-height: 50vh;">
+      <h3 style='color: #ccc;font-size: 30px;'>Ingen meldinger</h3>
+      <div class="message_holder"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l8 offset-l4">
+      <form action="" method="POST">
+        {% if session['chatroom'] != '-1' %}
+        <input type="hidden" class="username" value="{{ user.username }}"/>
+        <input type="text" class="message" placeholder="Skriv en melding"/>
+        <input class="btn" type="submit"/>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port + '?rid=' + {{ chatroom }});
+
+      socket.on( 'connect', function() {
+        $( 'div.message_holder' ).html('')
+        $( 'div.chatroom_holder' ).html('')
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        socket.emit( 'load messages', {
+          data: "Loading messages"
+        } )
+        socket.emit( 'Load chats', {
+          data: "Loading chats"
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_name = $( 'input.username' ).val()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input,
+            room_id : {{ session['chatroom'] }}
+          } )
+
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+      socket.on( 'previous message', function ( msg, sender ) {
+        console.log( msg )
+        $( 'h3' ).remove()
+        $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg+'</b> '+sender+'</div>')
+      })
+      socket.on( 'Load chatrooms', function( user ) {
+        console.log( user )
+        $( 'div.chatroom_holder' ).append( '<a href="/newchat/'+user+'"><div class="Nunito" style="color: black; margin-top: 20px;">'+user+'</div></a>' )
+      } )
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' && msg.room_id == {{chatroom}} && msg.message != '' ) {
+          socket.emit( 'sent message', {
+            message : msg.message
+          })
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+        }
+      })
+    </script>
+{% endblock %} 

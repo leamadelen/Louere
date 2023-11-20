@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if form %}
+    <h1 class="newfont" style="font-size: 40px; padding-top: 50px;">Louer</h1>
+    <p style="width: 40%; font-size: 20px;">Har du noe som andre kan ha nytte av å låne? Hjelp nærmiljøet ditt ved å legge ut ditt bidrag hos oss! </p>
+
+    <div style="background-color: lemonchiffon; padding: 20px; border-radius: 10px;">
+        <p style="text-decoration: underline; font-size: 22px; margin-top: 0;">Leie ut:</p>
+        <p style="margin-top: 0;">Last opp et bilde og skriv en raskt beskrivelse:</p>
+    <form action="" method="post" enctype=multipart/form-data>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.file.label }}<br>
+            {{ form.file }}<br>
+            <br><br>
+            {{ form.post.label }}<br>
+            {{ form.post(cols=32, rows=4) }}<br>
+            {% for error in form.post.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    </div>
+    {% else %}
+    <h1 class="newfont" style="font-size: 40px; padding-top: 10px;">Leie:</h1>
+    <p style="width: 40%; font-size: 20px;">Trenger du en gjenstand til et engangsbruk? Lei hos oss, det er godt for miljøet og godt for lommeboka!</p>
+    {% endif %}
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    <br>
+    {% if prev_url %}
+    <a href="{{ prev_url }}">< Forrige</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Neste ></a>
+    {% endif %}
+{% endblock %}

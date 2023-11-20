@@ -1,0 +1,28 @@
+<div style="background-color: lemonchiffon; padding: 40px; padding-bottom: 20px; border-radius: 25px; margin-top: 40px;">
+<div class="row">
+    <div class="col l1">
+        <img src="{{ post.author.avatar(50) }}">
+    </div>
+    <div class="col l2">
+        <a href="{{ url_for('user', username=post.author.username) }}">
+            {{ post.author.username }}
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col l4">
+        <img src="/static/{{post.image}}" class='responsive-img'>
+    </div>
+    <div class="col l8">
+        {{ post.body }}
+    </div>
+</div>
+<div class="row">
+    <div class="col l2 offset-l4 center">
+        <a href="{{ url_for('newchat', username=post.author.username) }}"><button class="btn">Melding</button></a>
+    </div>
+    <div class="col l2 center">
+        <a href="{{ url_for('user', username=post.author.username) }}"><button class="btn">Profil</button></a>
+    </div>
+</div>
+</div>

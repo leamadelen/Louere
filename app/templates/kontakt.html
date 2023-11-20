@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-top: 100px;">
+    <h1 class="Nunito">Kontakt</h1>
+    <p class="Nunito">Vi i Louer ønsker å hjelpe deg dersom du trenger hjelp. Ta kontakt med oss om du lurer på noe.</p>
+    <form action="" method="post" novalidate style="margin-top: 50px;">
+        {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="col l6">
+                <p>
+                    {{ form.name.label }}<br>
+                    {{ form.name(size=32) }}<br>
+                    {% for error in form.name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col l6">
+                <p>
+                    {{ form.email.label }}<br>
+                    {{ form.email(size=32) }}<br>
+                    {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="col l12">
+                <p>
+                    {{ form.message.label }}<br>
+                    {{ form.message(size=32) }}<br>
+                    {% for error in form.message.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <p>{{ form.submit(class_='btn') }}</p>
+    </form>
+</div>
+{% endblock %}

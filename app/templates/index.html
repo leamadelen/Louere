@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row" style="margin: 0; padding: 0;">
+        <div class="col l5" style="padding: 0; margin: 0;">
+            <h1 class="newfont" style="padding-top: 60px;">Lei istedet for å kjøpe!</h1>
+            <h2 class="newfont" style="font-size: 30px; margin-top: 0;">Har du noen ski liggende du aldri bruker og ønsker å tjene penger?</h2>
+            <p class="newfont">Lei de ut og tjen penger. Finn raskt interesserte kunder, og tjen penger på å leie ut ting du aldri bruker!</p>
+            {% if current_user.is_authenticated %}
+            <div class="col l5 center">
+                <a href="{{ url_for('explore') }}"><button class="btn newfont">Leie</button></a>
+            </div>
+            <div class="col l5 center">
+                <a href="{{ url_for('leie') }}"><button class="btn newfont">Leie ut</button></a>
+            </div>
+            {% else %}
+            <div class="col l5 center">
+                <a href="{{ url_for('login') }}"><button class="btn newfont">Login</button></a>
+            </div>
+            <div class="col l5 center">
+                <a href="{{ url_for('register') }}"><button class="btn newfont">Registrer</button></a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col l4 offset-l1" style="margin-top: 140px;">
+            <img src="/static/LouerForside.jpg" class="responsive-img">
+        </div>
+    </div>
+{% endblock %}
